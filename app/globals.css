@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 248, 250, 252;
+  --background-end-rgb: 241, 245, 249;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 15, 23, 42;
+    --background-end-rgb: 30, 41, 59;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  min-height: 100vh;
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer components {
+  .chat-container {
+    @apply w-full max-w-2xl mx-auto p-4 rounded-lg shadow-md;
+  }
+  
+  .message {
+    @apply mb-4 flex;
+  }
+  
+  .message-user {
+    @apply justify-end;
+  }
+  
+  .message-bot {
+    @apply justify-start;
+  }
+  
+  .message-content {
+    @apply max-w-[80%] px-4 py-2 rounded-lg;
+  }
+  
+  .message-user .message-content {
+    @apply bg-primary text-white rounded-br-none;
+  }
+  
+  .message-bot .message-content {
+    @apply bg-gray-200 dark:bg-gray-700 rounded-bl-none;
+  }
+  
+  .chat-input {
+    @apply w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+  
+  .send-button {
+    @apply absolute right-3 top-3 bg-primary text-white p-2 rounded-full hover:bg-blue-600 transition;
+  }
+} 
