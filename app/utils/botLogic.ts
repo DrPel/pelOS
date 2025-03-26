@@ -35,7 +35,7 @@ export const defaultBotConfig: BotConfig = {
     }
   ],
   defaultReply: '我不太理解你的问题，能否换个方式提问？',
-  welcomeMessage: '你好！欢迎来到我的个人网站。你可以问我关于我的项目经验、技能专长或者兴趣爱好等问题。'
+  welcomeMessage: "yo what's up"
 };
 
 // 检查消息是否匹配某个话题

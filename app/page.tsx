@@ -56,9 +56,9 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <header className="mb-8 text-center">
-        <h1 className="text-3xl font-bold mb-2">个人网站聊天机器人</h1>
+        <h1 className="text-3xl font-bold mb-2">PelOS</h1>
         <p className="text-gray-600 dark:text-gray-300">
-          欢迎与我的聊天机器人交流，了解更多关于我的信息
+          Hello, I am PelOS
         </p>
       </header>
       
