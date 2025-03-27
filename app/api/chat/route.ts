@@ -38,7 +38,7 @@ export async function POST(req: Request) {
         'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`
       },
       body: JSON.stringify({
-        model: "DeepSeek-R1",
+        model: "gpt-3.5-turbo",
         messages: [
           // 系统消息 - 控制回答风格和行为
           {
