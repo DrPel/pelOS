@@ -99,25 +99,33 @@ export default function Chat() {
       
       <div className="flex-1 overflow-y-auto space-y-4 mb-4">
         {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`p-4 rounded-lg ${
-              message.role === 'user'
-                ? 'bg-blue-500 text-white ml-auto'
-                : 'bg-gray-200 text-gray-800'
-            } max-w-[80%]`}
+          <div 
+            key={index} 
+            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            {message.content}
+            <div
+              className={`p-4 rounded-lg ${
+                message.role === 'user'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-200 text-gray-800'
+              } inline-block max-w-[80%]`}
+            >
+              {message.content}
+            </div>
           </div>
         ))}
         {loading && (
-          <div className="bg-gray-200 text-gray-800 p-4 rounded-lg max-w-[80%]">
-            正在思考...
+          <div className="flex justify-start">
+            <div className="bg-gray-200 text-gray-800 p-4 rounded-lg inline-block max-w-[80%]">
+              正在思考...
+            </div>
           </div>
         )}
         {errorMessage && (
-          <div className="bg-red-100 text-red-800 p-4 rounded-lg max-w-full text-sm">
-            错误详情: {errorMessage}
+          <div className="flex justify-start">
+            <div className="bg-red-100 text-red-800 p-4 rounded-lg inline-block max-w-full text-sm">
+              错误详情: {errorMessage}
+            </div>
           </div>
         )}
       </div>
