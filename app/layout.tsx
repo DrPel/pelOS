@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: '个人聊天机器人',
-  description: '欢迎与我的聊天机器人交流',
+  title: 'pelOS',
+  description: 'I am pel, making tools',
 };
 
 export default function RootLayout({
