@@ -1,0 +1,45 @@
+import { NextResponse } from 'next/server';
+
+export const runtime = 'edge';
+
+export async function POST(req: Request) {
+  try {
+    const { messages } = await req.json();
+    
+    // 获取最新的用户消息
+    const userMessage = messages.length > 0 ? messages[0].content : '';
+    
+    // 使用 POST 请求，但使用 URLSearchParams 格式
+    const formData = new URLSearchParams();
+    formData.append('prompt', userMessage);
+    formData.append('key', process.env.ANTHROPIC_API_KEY || '');
+    
+    // 调用 aihubmix API
+    const response = await fetch('https://aihubmix.com/v1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: formData
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('API error:', errorText);
+      throw new Error(`API error: ${response.status} ${errorText}`);
+    }
+
+    const data = await response.json();
+    console.log('API Response:', data);
+
+    return NextResponse.json({
+      message: data.response || "无响应内容"
+    });
+  } catch (error: any) {
+    console.error('Error:', error);
+    return NextResponse.json(
+      { error: 'Failed to process request', details: error.message },
+      { status: 500 }
+    );
+  }
+} 
