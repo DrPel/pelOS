@@ -1,34 +1,15 @@
 import { NextResponse } from 'next/server';
+import { SYSTEM_PROMPTS } from '@/config/prompts';
 
 export const runtime = 'edge';
 
 export async function POST(req: Request) {
   try {
-    const { messages, context } = await req.json();
+    const { messages } = await req.json();
     
     // 获取用户消息
     const userMessage = messages[0].content;
     console.log('用户消息:', userMessage);
-    
-    // 准备API请求消息数组
-    const apiMessages = [
-      // 系统消息 - 控制回答风格和行为
-      {
-        role: "system",
-        content: "你的名字叫 pel, 是一个专业、简洁的助手。回答要点明确，使用友好的语气。基于提供的上下文资料回答问题，如果资料中没有相关信息，请诚实说明。"
-      }
-    ];
-    
-    // 如果提供了上下文，添加上下文消息
-    if (context) {
-      apiMessages.push({
-        role: "user", 
-        content: "以下是相关资料，请基于这些资料回答我接下来的问题：\n\n" + context
-      });
-    }
-    
-    // 添加用户问题
-    apiMessages.push(...messages);
     
     // 调用 AiHubMix API
     const response = await fetch('https://aihubmix.com/v1/chat/completions', {
@@ -38,19 +19,9 @@ export async function POST(req: Request) {
         'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "gpt-4o-mini",
         messages: [
-          // 系统消息 - 控制回答风格和行为
-          {
-            role: "system",
-            content: "你的名字叫 pel, 是一个专业、简洁的助手。回答要点明确，使用友好的语气。基于提供的上下文资料回答问题，如果资料中没有相关信息，请诚实说明。"
-          },
-          // 上下文资料消息
-          {
-            role: "user", 
-            content: "以下是相关资料，请基于这些资料回答我接下来的问题：\n\n" 
-          },
-          // 用户的实际问题
+          { role: 'system', content: SYSTEM_PROMPTS.default },
           ...messages
         ],
         temperature: 0.7,
