@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
+import Link from 'next/link';
+import { SYSTEM_PROMPTS } from '@/config/prompts';
 
 interface Message {
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'system';
   content: string;
 }
 
@@ -13,8 +15,6 @@ export default function Chat() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [context, setContext] = useState('');
-  const [showContext, setShowContext] = useState(false);
 
   // 添加欢迎消息
   useEffect(() => {
@@ -34,16 +34,11 @@ export default function Chat() {
     setErrorMessage('');
 
     try {
-      console.log('发送请求:', [{ role: 'user', content: input }]);
-      
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          messages: [
-            { role: 'user', content: input } 
-          ],
-          context: context || undefined
+          messages: [...messages, userMessage]
         }),
       });
 
@@ -76,39 +71,29 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)] max-w-2xl mx-auto p-4">
-      <div className="mb-2">
-        <button 
-          className="text-sm text-blue-500 hover:text-blue-700"
-          onClick={() => setShowContext(!showContext)}
+    <div className="flex flex-col h-[calc(100vh-80px)] max-w-4xl mx-auto">
+      <div className="flex items-center justify-between mb-6">
+        <Link 
+          href="/"
+          className="text-gray-600 hover:text-gray-900 transition-colors"
         >
-          {showContext ? '隐藏上下文' : '显示上下文'}
-        </button>
-        
-        {showContext && (
-          <div className="mt-2">
-            <textarea
-              className="w-full h-32 p-2 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              placeholder="在这里粘贴参考资料、文档或上下文..."
-              value={context}
-              onChange={(e) => setContext(e.target.value)}
-            ></textarea>
-          </div>
-        )}
+          ← 返回首页
+        </Link>
+        <h1 className="text-2xl font-bold text-gray-900">Chat with PelOS</h1>
       </div>
       
-      <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+      <div className="flex-1 overflow-y-auto mb-4 bg-white rounded-xl shadow-sm p-4">
         {messages.map((message, index) => (
           <div 
             key={index} 
-            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} mb-4`}
           >
             <div
-              className={`p-4 rounded-lg ${
+              className={`p-4 rounded-2xl ${
                 message.role === 'user'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-800'
-              } inline-block max-w-[80%]`}
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-800'
+              } inline-block max-w-[80%] shadow-sm`}
             >
               {message.content}
             </div>
@@ -116,31 +101,32 @@ export default function Chat() {
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-gray-200 text-gray-800 p-4 rounded-lg inline-block max-w-[80%]">
+            <div className="bg-gray-100 text-gray-800 p-4 rounded-2xl inline-block max-w-[80%] shadow-sm">
               正在思考...
             </div>
           </div>
         )}
         {errorMessage && (
           <div className="flex justify-start">
-            <div className="bg-red-100 text-red-800 p-4 rounded-lg inline-block max-w-full text-sm">
+            <div className="bg-red-50 text-red-800 p-4 rounded-2xl inline-block max-w-full text-sm shadow-sm">
               错误详情: {errorMessage}
             </div>
           </div>
         )}
       </div>
-      <form onSubmit={handleSubmit} className="flex gap-2">
+      
+      <form onSubmit={handleSubmit} className="flex gap-3 bg-white p-4 rounded-xl shadow-sm">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="输入消息..."
-          className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
         <button
           type="submit"
           disabled={loading}
-          className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+          className="p-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
         >
           <PaperAirplaneIcon className="w-6 h-6" />
         </button>
