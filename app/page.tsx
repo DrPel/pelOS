@@ -79,7 +79,7 @@ export default function Home() {
       <DraggableWindow 
         title="Documents" 
         className="w-[90vw] md:w-48"
-        defaultPosition={{ x: window.innerWidth > 768 ? 90 : 20, y: window.innerWidth > 768 ? 20 : 120 }}
+        defaultPosition={{ x: 20, y: 20 }}
         isOpen={openWindows.documents}
         onClose={() => toggleWindow('documents')}
       >
@@ -92,7 +92,7 @@ export default function Home() {
       <DraggableWindow 
         title="Recycle Bin" 
         className="w-[90vw] md:w-48"
-        defaultPosition={{ x: window.innerWidth > 768 ? 160 : 20, y: window.innerWidth > 768 ? 20 : 220 }}
+        defaultPosition={{ x: 20, y: 20 }}
         isOpen={openWindows.recycleBin}
         onClose={() => toggleWindow('recycleBin')}
       >
@@ -105,7 +105,7 @@ export default function Home() {
       <DraggableWindow 
         title="Settings" 
         className="w-[90vw] md:w-48"
-        defaultPosition={{ x: window.innerWidth > 768 ? 230 : 20, y: window.innerWidth > 768 ? 20 : 320 }}
+        defaultPosition={{ x: 20, y: 20 }}
         isOpen={openWindows.settings}
         onClose={() => toggleWindow('settings')}
       >
@@ -118,7 +118,7 @@ export default function Home() {
       <DraggableWindow 
         title="Welcome" 
         className="w-[90vw] md:w-[600px]"
-        defaultPosition={{ x: window.innerWidth > 768 ? 300 : 20, y: window.innerWidth > 768 ? 100 : 420 }}
+        defaultPosition={{ x: 20, y: 20 }}
         isOpen={openWindows.welcome}
         onClose={() => toggleWindow('welcome')}
       >

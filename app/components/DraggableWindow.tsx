@@ -46,16 +46,69 @@ export default function DraggableWindow({
       setIsDragging(false);
     };
 
+    // Add responsive positioning
+    const adjustPosition = () => {
+      if (windowRef.current) {
+        const isDesktop = window.innerWidth > 768;
+        const newPosition = { ...defaultPosition };
+        
+        if (isDesktop) {
+          switch (title) {
+            case 'Documents':
+              newPosition.x = 90;
+              newPosition.y = 20;
+              break;
+            case 'Recycle Bin':
+              newPosition.x = 160;
+              newPosition.y = 20;
+              break;
+            case 'Settings':
+              newPosition.x = 230;
+              newPosition.y = 20;
+              break;
+            case 'Welcome':
+              newPosition.x = 300;
+              newPosition.y = 100;
+              break;
+          }
+        } else {
+          switch (title) {
+            case 'Documents':
+              newPosition.y = 120;
+              break;
+            case 'Recycle Bin':
+              newPosition.y = 220;
+              break;
+            case 'Settings':
+              newPosition.y = 320;
+              break;
+            case 'Welcome':
+              newPosition.y = 420;
+              break;
+          }
+        }
+        
+        setPosition(newPosition);
+      }
+    };
+
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     }
 
+    // Initial position adjustment
+    adjustPosition();
+
+    // Add resize listener
+    window.addEventListener('resize', adjustPosition);
+
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('resize', adjustPosition);
     };
-  }, [isDragging, dragOffset]);
+  }, [isDragging, dragOffset, defaultPosition, title]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (windowRef.current) {
